@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/logo-mascote.png" width="120" alt="AWS Cloud Club Mascote"/>
-
 # Apresentação de Introdução — AWS Cloud Club Univali
 
 Slides interativos em HTML para a apresentação de lançamento e introdução ao **AWS Cloud Club Univali**.
@@ -124,8 +122,4 @@ Para adaptar a apresentação para um novo evento:
 
 <div align="center">
 
-Feito com ☁️ pelo **AWS Cloud Club Univali**
-
 </div>
-# apresentacao-introducao-cloud-club
-# apresentacao-introducao-cloud-club

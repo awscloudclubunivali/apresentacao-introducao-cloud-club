@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Cloud Club - UNIVALI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 1. THE SETUP */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #080512;
+            /* Fundo galáctico escuro */
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            /* Impede que a página faça scroll */
+        }
+
+        /* Fundo de Estrelas Animado CSS */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0, 0, 0, 0)),
+                radial-gradient(2px 2px at 40px 70px, #e0e7ff, rgba(0, 0, 0, 0)),
+                radial-gradient(2px 2px at 50px 160px, #c7d2fe, rgba(0, 0, 0, 0)),
+                radial-gradient(3px 3px at 90px 40px, #ffffff, rgba(0, 0, 0, 0)),
+                radial-gradient(2px 2px at 130px 80px, #e0e7ff, rgba(0, 0, 0, 0)),
+                radial-gradient(2px 2px at 160px 120px, #c7d2fe, rgba(0, 0, 0, 0)),
+                radial-gradient(3px 3px at 200px 200px, #ffffff, rgba(0, 0, 0, 0)),
+                radial-gradient(2px 2px at 250px 60px, #e0e7ff, rgba(0, 0, 0, 0)),
+                radial-gradient(2px 2px at 300px 100px, #c7d2fe, rgba(0, 0, 0, 0)),
+                radial-gradient(2px 2px at 350px 250px, #ffffff, rgba(0, 0, 0, 0)),
+                radial-gradient(2px 2px at 400px 150px, #e0e7ff, rgba(0, 0, 0, 0)),
+                radial-gradient(3px 3px at 450px 300px, #c7d2fe, rgba(0, 0, 0, 0));
+            background-repeat: repeat;
+            background-size: 500px 500px;
+            opacity: 0.5;
+            animation: starsMove 150s linear infinite;
+        }
+
+        /* Nebulosa de Fundo (Roxo e Azul) */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background:
+                radial-gradient(circle at 15% 50%, rgba(109, 40, 217, 0.15), transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(30, 58, 138, 0.15), transparent 50%);
+        }
+
+        @keyframes starsMove {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: -500px -500px;
+            }
+        }
+
+        .slide-container {
+            align-items: flex-start;
+            background-color: rgba(15, 17, 26, 0.85);
+            /* Fundo translúcido para ver as estrelas */
+            backdrop-filter: blur(12px);
+            /* Efeito de vidro esfumaçado */
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            /* Borda roxa sutil */
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(76, 29, 149, 0.2);
+            display: none;
+            /* Esconde todos os slides por padrão */
+            flex-direction: column;
+            font-family: 'Inter', sans-serif;
+            gap: 30px;
+            /* Reduzido levemente para evitar overflow */
+            height: 720px;
+            justify-content: center;
+            overflow: hidden;
+            padding: 40px 60px;
+            /* Reduzido levemente para evitar overflow */
+            position: absolute;
+            /* Sobrepõe os slides no centro */
+            width: 1280px;
+        }
+
+        /* Classe adicionada via JavaScript para mostrar o slide atual */
+        .slide-container.active {
+            display: flex;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.98) translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* BACKGROUND STYLING */
+        .slide-container::before {
+            background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at bottom left, rgba(0, 161, 201, 0.1) 0%, transparent 40%);
+            content: '';
+            height: 100%;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: 0;
+        }
+
+        .slide-container::after {
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.7), rgba(255, 153, 0, 0.6), transparent);
+            bottom: 0;
+            content: '';
+            height: 4px;
+            left: 0;
+            position: absolute;
+            width: 100%;
+            z-index: 0;
+        }
+
+        .slide-container>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* TYPOGRAPHY */
+        .slide-container h1,
+        .slide-container h2,
+        .slide-container h3,
+        .slide-container h4 {
+            color: #f2f3f3;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+        }
+
+        .slide-container h1 span,
+        .slide-container h2 span,
+        .accent-text {
+            color: #ff9900;
+        }
+
+        .slide-container p,
+        .slide-container .subtitle,
+        .slide-container li {
+            color: #d1d5db;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .slide-container h1 {
+            font-size: 72px;
+            line-height: 1.1;
+            text-align: center;
+        }
+
+        .slide-container .slide-title {
+            font-size: 50px;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .slide-container h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .slide-container p,
+        .slide-container li {
+            font-size: 19px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .slide-container .subtitle {
+            color: #a78bfa;
+            font-size: 32px;
+            font-weight: 500;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        /* LAYOUT DEFINITIONS */
+        .title-layout {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .logo-container {
+            width: 250px;
+            height: 250px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.6));
+        }
+
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .two-column {
+            display: flex;
+            gap: 50px;
+            width: 100%;
+            align-items: center;
+        }
+
+        .two-column>div {
+            flex: 1;
+        }
+
+        .bullet-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .bullet-list li {
+            color: #d1d5db;
+            margin-bottom: 25px;
+            padding-left: 40px;
+            position: relative;
+        }
+
+        .bullet-list li i {
+            color: #ff9900;
+            font-size: 24px;
+            left: 0;
+            position: absolute;
+            top: 2px;
+        }
+
+        .image-wrapper {
+            border-radius: 16px;
+            height: 380px;
+            overflow: hidden;
+            width: 100%;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .image-wrapper img {
+            height: 100%;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        /* TILED ICONS & GRID */
+        .tiled-content {
+            align-items: stretch;
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .tile {
+            align-items: flex-start;
+            background-color: rgba(30, 37, 50, 0.6);
+            border-radius: 16px;
+            border-top: 4px solid #8b5cf6;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 25px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .tile h3 {
+            font-weight: 700;
+        }
+
+        .tile .icon {
+            align-items: center;
+            background-color: rgba(139, 92, 246, 0.15);
+            border-radius: 12px;
+            color: #a78bfa;
+            display: flex;
+            font-size: 32px;
+            height: 60px;
+            justify-content: center;
+            margin-bottom: 20px;
+            width: 60px;
+        }
+
+        /* CORRIGIDO: GRID DE SERVIÇOS AWS (LOGOS E TÍTULOS) */
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            /* Reduzido para caber melhor na tela */
+            width: 100%;
+        }
+
+        .service-category {
+            background-color: rgba(30, 37, 50, 0.6);
+            border-radius: 16px;
+            padding: 20px;
+            /* Reduzido de 30px para 20px */
+            border-left: 4px solid #ff9900;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .service-category h3 {
+            color: #a78bfa;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            /* Reduzido para encaixar na altura */
+            text-align: center;
+        }
+
+        .service-items-container {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        .service-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Logos dos Serviços Ajustadas para um tamanho excelente sem quebrar o layout */
+        .service-item img {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+        }
+
+        .service-item span {
+            color: #f2f3f3;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        /* TRILHA DE CERTIFICAÇÕES */
+        .cert-grid {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            align-items: stretch;
+        }
+
+        .cert-tier {
+            background-color: rgba(30, 37, 50, 0.6);
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            flex: 1;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cert-badges-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cert-badge-img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 15px rgba(255, 153, 0, 0.2));
+        }
+
+        .cert-tier h3 {
+            font-size: 22px;
+            color: #f2f3f3;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .cert-tier p {
+            font-size: 15px;
+            color: #9ca3af;
+            margin-bottom: 0;
+        }
+
+        /* ESTILOS DO TIME */
+        .tiled-content.team-grid {
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .tiled-content.team-grid .tile {
+            flex: 0 0 calc(50% - 10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #ff9900;
+            padding: 20px 25px;
+        }
+
+        .team-member-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .team-avatar {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #a78bfa;
+            flex-shrink: 0;
+        }
+
+        .team-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .team-info h3 {
+            color: #f2f3f3;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .team-info .role {
+            color: #ff9900;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 0;
+        }
+
+        .tiled-content.team-grid .tile p.description {
+            font-size: 15px;
+            color: #d1d5db;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        /* QR Code Custom Tiles */
+        .tiled-content.qr-grid .tile {
+            align-items: center;
+            text-align: center;
+            border-top: 4px solid #ff9900;
+            padding: 25px 20px;
+        }
+
+        .qr-code-img {
+            width: 200px;
+            height: 200px;
+            background-color: #ffffff;
+            padding: 10px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            object-fit: contain;
+        }
+
+        .qr-title {
+            color: #f2f3f3;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .qr-subtitle {
+            color: #9ca3af;
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+
+        /* Q&A Layout */
+        .qa-layout {
+            align-self: center;
+            margin: 0 auto;
+            text-align: center;
+            width: 100%;
+        }
+
+        .qa-layout h2 {
+            font-size: 90px;
+            margin-bottom: 20px;
+            color: #ff9900;
+            text-shadow: 0 0 30px rgba(255, 153, 0, 0.3);
+        }
+
+        .qa-layout p {
+            font-size: 28px;
+            color: #d1d5db;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Slide 1: Title_Slide com Logo -->
+    <div class="slide-container" id="slide1">
+        <div class="title-layout">
+            <!-- Logo do seu Mascote aqui -->
+            <div class="logo-container">
+                <img src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/logo-mascote.png" alt="Logo AWS Cloud Club Capivara">
+            </div>
+            <h1>AWS Cloud Club<br><span>UNIVALI</span></h1>
+            <p class="subtitle">Sejam bem-vindos!</p>
+        </div>
+    </div>
+
+    <!-- Slide 2: AWS Cloud Club / O que é -->
+    <div class="slide-container" id="slide2">
+        <h2 class="slide-title">O que é o <span>AWS Cloud Clubs?</span></h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div>
+                    <h3 style="color: #a78bfa;">Sobre o programa</h3>
+                    <p>Os AWS Cloud Clubs são grupos de usuários coordenados por estudantes, destinados a estudantes que
+                        concluíram o ensino médio e autodidatas.</p>
+                    <p style="margin-top: 15px;">Esses clubes são liderados por <span class="accent-text"
+                            style="font-weight: 600;">Cloud Club Captains</span> e aceitam qualquer pessoa com mais de
+                        18 anos apaixonada por tecnologia e inovação.</p>
+                    <div
+                        style="background-color: rgba(255, 153, 0, 0.1); border-left: 4px solid #ff9900; padding: 15px 20px; border-radius: 0 8px 8px 0; margin-top: 25px;">
+                        <p style="margin: 0; font-weight: 600; color: #f2f3f3; font-size: 18px;"><i
+                                class="fa-solid fa-map-location-dot"
+                                style="color: #ff9900; margin-right: 10px;"></i>Hoje no Brasil temos mais de 15 Cloud
+                            Clubs em diversos estados conectando milhares de pessoas.</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="image-wrapper">
+                        <!-- Imagem Genérica de Estudantes via Google -->
+                        <img src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/cloud-clubs.jpg"
+                            alt="Estudantes colaborando em um laptop">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: O que é Cloud Computing -->
+    <div class="slide-container" id="slide3">
+        <h2 class="slide-title">O que é <span>Cloud Computing?</span></h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div>
+                    <h3 style="color: #a78bfa;">O Conceito</h3>
+                    <p>A computação em nuvem é a entrega sob demanda de recursos de TI pela Internet com definição de
+                        preço de <strong>pagamento conforme o uso</strong> (Pay-as-you-go).</p>
+                    <p style="margin-top: 15px; margin-bottom: 25px;">Em vez de comprar, ter e manter datacenters e
+                        servidores físicos, você acessa serviços de tecnologia de um provedor de nuvem como a AWS.</p>
+
+                    <ul class="bullet-list">
+                        <li><i class="fa-solid fa-server"></i> Sem custos antecipados de infraestrutura</li>
+                        <li><i class="fa-solid fa-arrow-up-right-dots"></i> Escalabilidade e elasticidade automáticas
+                        </li>
+                        <li><i class="fa-solid fa-earth-americas"></i> Implantação global em minutos</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="image-wrapper">
+                        <!-- Imagem Genérica de Cloud via Google -->
+                        <img src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/cloud-computing.jpg"
+                            alt="Conceito abstrato de cloud computing com redes conectadas">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Principais Serviços AWS (Ajustado) -->
+    <div class="slide-container" id="slide4">
+        <h2 class="slide-title">A plataforma <span>AWS</span></h2>
+        <div class="content-area">
+            <p style="text-align: center; margin-bottom: 20px; font-size: 20px;">Mais de 200 serviços completos para
+                qualquer tipo de aplicação.</p>
+            <div class="services-grid">
+
+                <!-- Compute -->
+                <div class="service-category">
+                    <h3><i class="fa-solid fa-microchip" style="margin-right: 10px;"></i>Computação</h3>
+                    <div class="service-items-container">
+                        <div class="service-item">
+                            <img src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/services/Arch_Amazon-EC2_64@5x.png" alt="Logo EC2">
+                            <span>Amazon EC2</span>
+                        </div>
+                        <div class="service-item">
+                            <img src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/services/Arch_AWS-Lambda_64@5x.png" alt="Logo Lambda">
+                            <span>AWS Lambda</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Storage -->
+                <div class="service-category">
+                    <h3><i class="fa-solid fa-hard-drive" style="margin-right: 10px;"></i>Armazenamento</h3>
+                    <div class="service-items-container">
+                        <div class="service-item">
+                            <img src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/services/Arch_Amazon-S3-on-Outposts_64@5x.png" alt="Logo S3">
+                            <span>Amazon S3</span>
+                        </div>
+                        <div class="service-item">
+                            <img src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/services/Arch_Amazon-EFS_64@5x.png" alt="Logo EFS">
+                            <span>Amazon EFS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Database -->
+                <div class="service-category">
+                    <h3><i class="fa-solid fa-database" style="margin-right: 10px;"></i>Banco de Dados</h3>
+                    <div class="service-items-container">
+                        <div class="service-item">
+                            <img src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/services/Arch_Amazon-RDS_64@5x.png" alt="Logo RDS">
+                            <span>Amazon RDS</span>
+                        </div>
+                        <div class="service-item">
+                            <img src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/services/Arch_Amazon-DynamoDB_64@5x.png" alt="Logo DynamoDB">
+                            <span>DynamoDB</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI / ML -->
+                <div class="service-category">
+                    <h3><i class="fa-solid fa-brain" style="margin-right: 10px;"></i>Inteligência Artificial</h3>
+                    <div class="service-items-container">
+                        <div class="service-item">
+                            <img src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/services/Arch_Amazon-SageMaker_64@5x.png" alt="Logo SageMaker">
+                            <span>SageMaker</span>
+                        </div>
+                        <div class="service-item">
+                            <img src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/services/Arch_Amazon-Bedrock_64@5x.png" alt="Logo Bedrock">
+                            <span>Amazon Bedrock</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Certificações Profissionais AWS -->
+    <div class="slide-container" id="slide5">
+        <h2 class="slide-title">Certificações <span>Oficiais</span></h2>
+        <div class="content-area">
+            <p style="text-align: center; margin-bottom: 30px; font-size: 20px;">Valide suas habilidades técnicas e
+                impulsione sua carreira no ecossistema de nuvem.</p>
+            <div class="cert-grid">
+
+                <!-- Foundational -->
+                <div class="cert-tier">
+                    <div class="cert-badges-container">
+                        <img class="cert-badge-img" src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/certifications/cloud-practitioner.png"
+                            alt="Logo Cloud Practitioner">
+                        <img class="cert-badge-img" src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/certifications/ai-practitioner.png"
+                            alt="Logo AI Practitioner">
+                    </div>
+                    <h3>Foundational</h3>
+                    <p>Conhecimento geral da nuvem AWS e visão básica dos serviços. Ideal para iniciantes e perfis não
+                        técnicos.</p>
+                    <strong style="color: #a78bfa; margin-top: 15px; display: block;">Ex: Cloud Practitioner</strong>
+                </div>
+
+                <!-- Associate -->
+                <div class="cert-tier">
+                    <div class="cert-badges-container">
+                        <img class="cert-badge-img" src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/certifications/sa-associate.png"
+                            alt="Logo Solutions Architect Associate">
+                        <img class="cert-badge-img" src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/certifications/da-associate.png"
+                            alt="Logo Data Engineer Associate">
+                    </div>
+                    <h3>Associate</h3>
+                    <p>Para profissionais com experiência prática construindo e implementando soluções usando os
+                        serviços AWS.</p>
+                    <strong style="color: #a78bfa; margin-top: 15px; display: block;">Ex: Solutions Architect
+                        (SAA)</strong>
+                </div>
+
+                <!-- Professional / Specialty -->
+                <div class="cert-tier">
+                    <div class="cert-badges-container">
+                        <img class="cert-badge-img" src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/certifications/do-professional.png"
+                            alt="Logo DevOps Engineer Professional">
+                        <img class="cert-badge-img" src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/certifications/ml-specialist.png"
+                            alt="Logo Machine Learning Specialist">
+                    </div>
+                    <h3>Professional & Specialty</h3>
+                    <p>Projetos avançados, arquiteturas complexas ou foco em domínios específicos (Dados, Machine
+                        Learning, Segurança).</p>
+                    <strong style="color: #a78bfa; margin-top: 15px; display: block;">Ex: SA Pro, Data Engineer</strong>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Plataformas de Estudo -->
+    <div class="slide-container" id="slide6">
+        <h2 class="slide-title">Plataformas de <span>Estudo</span></h2>
+        <div class="content-area">
+            <div class="tiled-content">
+
+                <div class="tile" style="border-top: 4px solid #8b5cf6;">
+                    <div class="icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <h3 style="color: #f2f3f3; font-size: 24px; margin-bottom: 10px;">AWS Educate</h3>
+                    <p style="color: #9ca3af; font-size: 16px;">Portal focado em iniciantes. Cursos gratuitos,
+                        laboratórios práticos e emblemas (badges) que você pode compartilhar no LinkedIn sem precisar de
+                        cartão de crédito.</p>
+                </div>
+
+                <div class="tile" style="border-top: 4px solid #8b5cf6;">
+                    <div class="icon"><i class="fa-solid fa-university"></i></div>
+                    <h3 style="color: #f2f3f3; font-size: 24px; margin-bottom: 10px;">AWS Academy</h3>
+                    <p style="color: #9ca3af; font-size: 16px;">Programa para instituições de ensino superior (como a
+                        UNIVALI). Oferece um currículo oficial pronto e completo para preparar alunos para as
+                        certificações.</p>
+                </div>
+
+                <div class="tile" style="border-top: 4px solid #8b5cf6;">
+                    <div class="icon"><i class="fa-solid fa-cubes"></i></div>
+                    <h3 style="color: #f2f3f3; font-size: 24px; margin-bottom: 10px;">AWS Skill Builder</h3>
+                    <p style="color: #9ca3af; font-size: 16px;">Centro de aprendizado digital da AWS. Mais de 600 cursos
+                        gratuitos sob demanda, criados pelos especialistas da própria Amazon, além de preparatórios
+                        oficiais.</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: O Time (Grid 2x2 com Fotos) -->
+    <div class="slide-container" id="slide7">
+        <h2 class="slide-title">Quem faz parte dessa <span>jornada</span></h2>
+        <div class="content-area">
+            <div class="tiled-content team-grid">
+
+                <!-- Henrique -->
+                <div class="tile">
+                    <div class="team-member-header">
+                        <!-- Substitua o src pela foto do Henrique -->
+                        <img class="team-avatar" src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/core-team/henrique.png"
+                            alt="Foto Henrique">
+                        <div class="team-info">
+                            <h3>Henrique Zimermann</h3>
+                            <p class="role"><i class="fa-solid fa-anchor" style="margin-right: 6px;"></i>Captain</p>
+                        </div>
+                    </div>
+                    <p class="description">Focado em arquitetura Cloud, práticas DevOps e orquestração de containers com
+                        Kubernetes.</p>
+                </div>
+
+                <!-- Diego -->
+                <div class="tile">
+                    <div class="team-member-header">
+                        <!-- Substitua o src pela foto do Diego -->
+                        <img class="team-avatar" src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/core-team/diego.png"
+                            alt="Foto Diego">
+                        <div class="team-info">
+                            <h3>Diego Silva</h3>
+                            <p class="role"><i class="fa-solid fa-microchip" style="margin-right: 6px;"></i>Tech /
+                                Research Leader</p>
+                        </div>
+                    </div>
+                    <p class="description">Trazendo todo o peso de Ciência de Dados, Big Data, AWS SageMaker e
+                        ecossistema Airflow.</p>
+                </div>
+
+                <!-- Gabrielly -->
+                <div class="tile">
+                    <div class="team-member-header">
+                        <!-- Substitua o src pela foto da Gabrielly -->
+                        <img class="team-avatar" src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/core-team/gabrielly.png"
+                            alt="Foto Gabrielly">
+                        <div class="team-info">
+                            <h3>Gabrielly Caroliny</h3>
+                            <p class="role"><i class="fa-solid fa-handshake" style="margin-right: 6px;"></i>Partnerships
+                                Leader</p>
+                        </div>
+                    </div>
+                    <p class="description">Nossa ponte com o mercado e comunidades, com foco em Fullstack (Frontend,
+                        Backend e Database).</p>
+                </div>
+
+                <!-- João Paulo -->
+                <div class="tile">
+                    <div class="team-member-header">
+                        <!-- Substitua o src pela foto do João Paulo -->
+                        <img class="team-avatar" src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/core-team/joao.png"
+                            alt="Foto João Paulo">
+                        <div class="team-info">
+                            <h3>João Paulo Kraisch</h3>
+                            <p class="role"><i class="fa-solid fa-calendar-check" style="margin-right: 6px;"></i>Events
+                                / Workshops Leader</p>
+                        </div>
+                    </div>
+                    <p class="description">O responsável por agitar nossos encontros, especialista em desenvolvimento
+                        Backend, IA e Python.</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Nossos Futuros Projetos -->
+    <div class="slide-container" id="slide8">
+        <h2 class="slide-title">Nossos Futuros <span>Projetos</span></h2>
+        <div class="content-area">
+            <div class="tiled-content">
+                <div class="tile" style="border-top: 4px solid #8b5cf6;">
+                    <div class="icon"><i class="fa-solid fa-laptop-code"></i></div>
+                    <h3 style="color: #f2f3f3; font-size: 24px; margin-bottom: 15px;">Workshops Hands-on</h3>
+                    <p style="color: #9ca3af; font-size: 18px;">Laboratórios práticos utilizando os serviços da AWS para
+                        sair da teoria e colocar a mão na massa.</p>
+                </div>
+                <div class="tile" style="border-top: 4px solid #8b5cf6;">
+                    <div class="icon"><i class="fa-solid fa-certificate"></i></div>
+                    <h3 style="color: #f2f3f3; font-size: 24px; margin-bottom: 15px;">Grupos de Estudo</h3>
+                    <p style="color: #9ca3af; font-size: 18px;">Sessões colaborativas para nos prepararmos juntos para
+                        certificações oficiais de Cloud.</p>
+                </div>
+                <div class="tile" style="border-top: 4px solid #8b5cf6;">
+                    <div class="icon"><i class="fa-solid fa-briefcase"></i></div>
+                    <h3 style="color: #f2f3f3; font-size: 24px; margin-bottom: 15px;">Painéis de Carreira</h3>
+                    <p style="color: #9ca3af; font-size: 18px;">Encontros com profissionais seniores do mercado, dicas
+                        de currículo, entrevistas e trilhas de evolução.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: QR Codes e Links -->
+    <div class="slide-container" id="slide9">
+        <h2 class="slide-title">Links <span>Importantes</span></h2>
+        <div class="content-area">
+            <div class="tiled-content qr-grid">
+
+                <!-- Linktree -->
+                <div class="tile">
+                    <p class="qr-title">Nossas Redes</p>
+                    <p class="qr-subtitle">Siga e conecte-se</p>
+                    <!-- O seu QR code oficial -->
+                    <img class="qr-code-img" src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/qr-codes/linktree.png" alt="QR Code Linktree">
+                    <p style="color: #ff9900; font-weight: 700; font-size: 20px;"><i class="fa-solid fa-tree"></i>
+                        Linktree</p>
+                </div>
+
+                <!-- Avaliação -->
+                <div class="tile">
+                    <p class="qr-title">Avaliação</p>
+                    <p class="qr-subtitle">Feedback do Evento</p>
+                    <!-- O seu QR code oficial -->
+                    <img class="qr-code-img" src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/qr-codes/avaliacao.png" alt="QR Code Avaliação">
+                    <p style="color: #ff9900; font-weight: 700; font-size: 20px;"><i class="fa-solid fa-star"></i> Seu
+                        Feedback</p>
+                </div>
+
+                <!-- Presença -->
+                <div class="tile">
+                    <p class="qr-title">Presença</p>
+                    <p class="qr-subtitle">Garante seu certificado/sorteio</p>
+                    <!-- O seu QR code oficial -->
+                    <img class="qr-code-img" src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/qr-codes/presenca.png"
+                        alt="QR Code Presença">
+                    <p style="color: #ff9900; font-weight: 700; font-size: 20px;"><i
+                            class="fa-solid fa-clipboard-check"></i> Check-in</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Q&A / Chamada para o palestrante -->
+    <div class="slide-container" id="slide10">
+        <div class="qa-layout">
+            <h2>Vamos Começar!</h2>
+            <p>Preparem-se para as palestras e não esqueçam do nosso sorteio no final.</p>
+        </div>
+    </div>
+
+    <!-- Lembrete de Navegação -->
+    <div
+        style="position: fixed; bottom: 20px; right: 20px; color: rgba(255,255,255,0.4); font-family: 'Inter', sans-serif; font-size: 14px; z-index: 100;">
+        Use as setas ⬅️ ➡️ ou Espaço para navegar
+    </div>
+
+    <script>
+        // Lógica para controlar a apresentação
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide-container');
+
+        function showSlide(index) {
+            // Evita passar do último ou do primeiro slide
+            if (index >= slides.length) {
+                currentSlide = slides.length - 1;
+            } else if (index < 0) {
+                currentSlide = 0;
+            } else {
+                currentSlide = index;
+            }
+
+            // Remove a classe 'active' de todos e adiciona apenas no atual
+            slides.forEach((slide, i) => {
+                if (i === currentSlide) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+        }
+
+        // Escuta os eventos do teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'ArrowDown') {
+                showSlide(currentSlide + 1);
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                showSlide(currentSlide - 1);
+            }
+        });
+
+        // Inicia a apresentação mostrando o primeiro slide
+        showSlide(0);
+    </script>
+
+</body>
+
+</html>
+```

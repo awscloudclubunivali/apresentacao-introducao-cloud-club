@@ -41,15 +41,6 @@ Apresentação de slides construída em **HTML + CSS puro**, com tema espacial/g
 
 ## Como usar
 
-### Apresentação ao vivo
-
-```bash
-# Não precisa instalar nada — abra direto no navegador
-open index.html
-# ou no Linux:
-xdg-open index.html
-```
-
 **Navegação pelos slides:**
 - `→` / `Space` — próximo slide
 - `←` — slide anterior
